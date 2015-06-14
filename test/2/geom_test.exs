@@ -6,7 +6,7 @@ defmodule Etudes.GeomTest do
   end
 
   test "bigger rectangle area" do
-    assert Etudes.Geom.area(12, 7) == 81
+    assert Etudes.Geom.area(12, 7) == 84
   end
 
   test "defaults to rectangle of width 1" do
