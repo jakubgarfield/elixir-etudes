@@ -12,7 +12,7 @@ defmodule Etudes.Geom do
   end
 
   defp area(:rectangle, height, width) when height >= 0 and width >= 0 do
-    area(height, width)
+    height * width
   end
 
   defp area(:triangle, a, b) when a >= 0 and b > 0 do
