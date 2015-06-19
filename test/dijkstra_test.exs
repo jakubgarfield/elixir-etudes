@@ -1,5 +1,6 @@
-defmodule DijkstraTest do
+defmodule Etudes.DijkstraTest do
   use ExUnit.Case
+  alias Etudes.Dijkstra
 
   test "gcd of the same number should equal that number" do
     assert Dijkstra.gcd(8, 8) == 8

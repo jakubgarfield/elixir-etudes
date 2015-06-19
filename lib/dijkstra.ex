@@ -1,4 +1,4 @@
-defmodule Dijkstra do
+defmodule Etudes.Dijkstra do
   @moduledoc """
   A module with all the great mathematic algorithms from Dijkstra
   """
