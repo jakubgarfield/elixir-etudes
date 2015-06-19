@@ -8,11 +8,11 @@ defmodule Etudes.Powers do
   """
   @spec pow(number, number) :: number
 
-  def pow(x, e) when e == 0 do
+  def pow(_, 0) do
     1
   end
 
-  def pow(x, e) when e == 1 do
+  def pow(x, 1) do
     x
   end
 
