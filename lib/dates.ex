@@ -16,22 +16,23 @@ defmodule Etudes.Dates do
   @spec julian(String.t) :: number
   def julian(iso_date) do
     [year, month, day] = date_parts(iso_date)
-    julian(day, month, days_in_year(year))
+    monthly_total(day, month, days_in_year(year))
   end
 
-  defp julian(total, month, [number_of_days_in_current_month | rest_of_the_year]) when month > 1 do
-    julian(total + number_of_days_in_current_month, month - 1, rest_of_the_year)
-  end
-
-  defp julian(total, _, _) do
+  defp monthly_total(total, 1, _) do
     total
   end
 
+  defp monthly_total(acc, i, [number_of_days_in_current_month | rest_of_the_year]) do
+    monthly_total(acc + number_of_days_in_current_month, i - 1, rest_of_the_year)
+  end
+
   defp days_in_year(year) do
-    cond do
-      is_leap_year(year) -> [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-      true -> [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    days_in_feb = cond do
+      is_leap_year(year) -> 29
+      true -> 28
     end
+    [31, days_in_feb, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   end
 
   defp is_leap_year(year) do
