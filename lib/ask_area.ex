@@ -1,7 +1,7 @@
 defmodule Etudes.AskArea do
   alias Etudes.Geom
 
-  @docmodule """
+  @moduledoc """
   A user interface for calculating the area
   """
 

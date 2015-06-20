@@ -1,5 +1,5 @@
 defmodule Etudes.Powers do
-  @docmodule """
+  @moduledoc """
   Contains all the magical powering methods
   """
 
