@@ -1,14 +1,12 @@
 defmodule Player do
   def play(hand) do
-    IO.puts("Player #{inspect(self)} hand is #{inspect(hand)}.")
+    IO.puts("Player #{inspect(self)} is #{inspect(hand)}.")
     receive do
       {:give, n, dealer} ->
-        IO.puts("Player #{inspect(self)} sends #{n} cards.")
         {cards_to_send, remaining_hand} = Enum.split(hand, n)
         send(dealer, {:take, cards_to_send, self})
         play(remaining_hand)
       {:take, cards, _} ->
-        IO.puts("Player #{inspect(self)} receives #{inspect(cards)}.")
         play(hand ++ cards)
       :game_over ->
         IO.puts("Player #{inspect(self)} leaves.")
@@ -19,10 +17,23 @@ end
 defmodule Dealer do
   def start(number_of_players \\ 2) do
     deck = shuffled_deck
-    dealt_cards = Tuple.to_list(Enum.split(deck, trunc(length(deck) / number_of_players)))
+    number_of_cards = trunc(length(deck) / number_of_players)
+    dealt_cards = Enum.map(1..number_of_players, fn(i) ->
+      Enum.slice(deck, (i - 1) * number_of_cards, number_of_cards)
+    end)
     players = Enum.map(dealt_cards, fn(player_cards) -> spawn(Player, :play, [player_cards]) end)
+    IO.puts("New game with #{inspect(players)}.")
     request_cards(players, 1)
     wait_for_cards(players, %{}, [])
+  end
+
+  def deal_cards(_, 0, _, result) do
+    result
+  end
+
+  def deal_cards(deck, n, length, result) do
+    [head | tail] = Tuple.to_list(Enum.split(deck, length))
+    deal_cards(tail, n - 1, length, result ++ head)
   end
 
   def next_round(players) when length(players) == 1 do
@@ -96,8 +107,8 @@ defmodule Dealer do
   end
 
   def shuffled_deck do
-    #card_values = [2,3,4,5,6,7,8,9,10,11,12,13,14]
-    card_values = [2,3,4,5]
+    # card_values = [2,3,4,5,6,7,8,9,10,11,12,13,14]
+    card_values = [1,2,3,4]
     all_cards = card_values ++ card_values ++ card_values ++ card_values
     Enum.shuffle(all_cards)
   end
